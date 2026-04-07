@@ -8,7 +8,7 @@
 		database::query("start transaction;");
 
 		// Fetch the current auto increment ID
-		$auto_increment_id = database::fetch("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'languages';")['AUTO_INCREMENT'];
+		$auto_increment_id = database::fetch("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '". DB_TABLE_PREFIX ."languages';")['AUTO_INCREMENT'];
 
 		// Prepare some example data
 		$data = [
@@ -134,6 +134,6 @@
 		database::query("rollback;");
 
 		// Revert the auto increment ID
-		database::query("ALTER TABLE languages AUTO_INCREMENT = ". (int)$auto_increment_id .";");
+		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."languages AUTO_INCREMENT = ". (int)$auto_increment_id .";");
 	}
 
