@@ -73,8 +73,12 @@
 
 	echo count($structure['tables']) . ' tables created' . PHP_EOL;
 
-	// Skip data.sql import — it targets the old SQL schema.
-	// Tests create their own fixtures via entity APIs.
+	// Import seed data
+	$data = file_get_contents(__DIR__ . '/../../install/data.sql');
+	$data = str_replace('`lc_', '`' . $prefix, $data);
+	$link->multi_query($data);
+	while ($link->next_result()) {}
+	echo 'Seed data imported' . PHP_EOL;
 
 	// Create admin user
 	$hash = password_hash('admin123456', PASSWORD_DEFAULT);
